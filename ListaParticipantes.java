@@ -10,6 +10,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+// Libreria de Base de Datos
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+
 public class ListaParticipantes {
     // atributo
     private List<Participante> participantes;
@@ -89,6 +99,49 @@ public class ListaParticipantes {
         return lista;
     }
     
+    /// CARGAR DESDE BASE E DATOS
+    
+    public void cargarDeBd( int idParticipante) {
+        
+        Connection conn = null;
+    
+        try { 
+        conn = DriverManager.getConnection("jdbc:sqlite:pronosticos.db");
+        Statement stmt = conn.createStatement();
+        String sql = "Select idParticipante,Nombre from participantes WHERE idParticipante= "+ idParticipante;
+        
+        ResultSet rs = stmt.executeQuery(sql);
+        ListaParticipantes lista = new ListaParticipantes();
+        while (rs.next()) {
+                       Participante e = new Participante(
+                        rs.getInt("idParticipante"),
+                        rs.getString("Nombre")
+                );
+                lista.addParticipante(e);
+                
+                            }
+             System.out.println("Mostrando los OBJETOS de ListaEquipos...");
+             System.out.println(lista.listar());
+            } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+                } catch (SQLException e) {
+                // conn close failed.
+                System.out.println(e.getMessage());
+            }
+        }
+    }   
+    
+    
+    
+    
+    
+    
+    
     // cargar desde el archivo
     public void cargarDeArchivo() {
         // para las lineas del archivo csv
@@ -132,5 +185,8 @@ public class ListaParticipantes {
                 System.out.println("Mensaje: " + ex.getMessage());
         }       
     }
+    
+    
+    
 
 }

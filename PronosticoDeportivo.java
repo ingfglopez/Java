@@ -23,13 +23,13 @@ public class PronosticoDeportivo {
 
     public void play(){
         // cargar y listar los equipos
-        equipos.cargarDeArchivo();
+        equipos.cargarDeBd();
         System.out.println("Los equipos cargados son: " + equipos.listar());
         
-        partidos.cargarDeArchivo(equipos);
+        partidos.cargarDeBd(equipos);
         System.out.println("Los partidos cargados son: " + partidos.listar());
 
-        participantes.cargarDeArchivo();
+        participantes.cargarDeBd();
         // Una vez cargados los participantes, para cada uno de ellos
         // cargar sus pronósticos
         for (Participante p : participantes.getParticipantes()) {

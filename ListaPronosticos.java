@@ -10,6 +10,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+// Libreria de Base de Datos
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+
+
 public class ListaPronosticos {
 
     // atributo
@@ -63,6 +74,59 @@ public class ListaPronosticos {
         }
         return lista;
     }
+    
+    /// CARGAR DESDE BASE E DATOS
+    
+    public void cargarDeBd(
+            int idParticipante, // id del participante que realizó el pronóstico
+            ListaEquipos listaequipos, // lista de equipos
+            ListaPartidos listapartidos // lista de partidos
+    ) {
+        Connection conn = null;
+        try {
+            // Establecer una conexión
+            conn = DriverManager.getConnection("jdbc:sqlite:pronosticos.db");
+            // Crear el "statement" para enviar comandos
+            Statement stmt = conn.createStatement();
+            String sql = "SELECT "
+                    + "idPronostico, idParticipante, idPartido, idEquipo, resultado "
+                    + "FROM pronosticos "
+                    + "WHERE idParticipante = " + idParticipante;
+            ResultSet rs = stmt.executeQuery(sql); // Ejecutar la consulta y obtener el ResultSet
+            while (rs.next()) {
+                // Obtener los objetos que necesito para el constructor
+                Partido partido = listapartidos.getPartido(rs.getInt("idPartido"));
+                Equipo equipo = listaequipos.getEquipo(rs.getInt("idEquipo"));
+                // crea el objeto en memoria
+                Pronostico pronostico = new Pronostico(
+                        rs.getInt("idPronostico"), // El id leido de la tabla
+                        equipo, // El Equipo que obtuvimos de la lista
+                        partido, // El Partido que obtuvimos de la lista
+                        // El primer caracter es una comilla delimitadora de campo
+                        rs.getString("resultado").charAt(1) // El resultado que leimos de la tabla,
+                );
+
+                // llama al metodo add para grabar el equipo en la lista en memoria
+                this.addPronostico(pronostico);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                // conn close failed.
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    
+    
+    
 
     // Cargar desde el archivo, filtrando solamente aquellos pronósticos
     // cuyo idParticipante coincide con el indicado

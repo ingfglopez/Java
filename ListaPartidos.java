@@ -14,6 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// Libreria de Base de Datos
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
 
 public class ListaPartidos {
     
@@ -88,6 +97,58 @@ public class ListaPartidos {
     public String toString() {
         return "ListaPartidos{" + "partidos=" + partidos + ", partidosCSV=" + partidosCSV + '}';
     }
+    
+    
+    
+    
+    
+    /// CARGAR DESDE BASE E DATOS
+    
+    public void cargarDeBd(int idPartido,  ListaEquipos listaequipos) {
+        
+        Connection conn = null;
+    
+        try { 
+        conn = DriverManager.getConnection("jdbc:sqlite:pronosticos.db");
+        Statement stmt = conn.createStatement();
+        String sql = "Select idPartido , idEquipo1 , idEquipo2 , golesEquipo1 , golesEquipo2  from partidos WHERE idPartido= "+ idPartido;
+        
+        ResultSet rs = stmt.executeQuery(sql);
+        Partido partido;
+        
+        while (rs.next()) {
+                        
+                       /*System.out.println(rs.getInt("idPartido") + "\t"
+                        + rs.getString("Nombre") + "\t");*/
+                       //int idPartido = rs.getInt("idPartido");
+                       int equipo1 = rs.getInt("idEquipo1");
+                       int equipo2 = rs.getInt("idEquipo2");
+                       int golesEquipo1 = rs.getInt("golesEquipo1");
+                       int golesEquipo2 = rs.getInt("golesEquipo2");
+                       
+                       Equipo equipoA = listaequipos.getEquipo(equipo1);
+                       Equipo equipoB = listaequipos.getEquipo(equipo2);
+                       partido = new Partido (idPartido,equipoA,equipoB,golesEquipo1,golesEquipo2);
+                       // llama al metodo add para grabar el equipo en la lista en memoria
+                       this.addPartido(partido);
+                            }
+                 
+        
+            } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+                } catch (SQLException e) {
+                // conn close failed.
+                System.out.println(e.getMessage());
+            }
+        }
+    }   
+    
+    
     
     
     // cargar desde el archivo

@@ -56,6 +56,15 @@ public class Participante {
     public void setPronosticos(ListaPronosticos pronosticos) {
         this.pronosticos = pronosticos;
     }
+    
+    /*public Class Participante implements Comparable<participante> {
+    private Integer idParticipante;
+    private String nombre;
+    private ListaPronosico pronostico;
+    
+   
+
+} */
 
     // retorna el puntaje del participando calculando los valores de los pronosticos
     public int getPuntaje() {
@@ -71,11 +80,11 @@ public class Participante {
         }
         return puntaje;
     }
-
+    
     @Override
     public String toString() {
         return "Participante{" + "idParticipante=" + idParticipante + ", nombre=" + nombre + ", pronosticos=" + pronosticos + ", puntaje=" + getPuntaje() + '}';
-    }    
+    }  
     
     void cargarPronosticos (ListaEquipos equipos, ListaPartidos partidos) {
         this.pronosticos.cargarDeArchivo(this.getIdParticipante(), equipos, partidos);

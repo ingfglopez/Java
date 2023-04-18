@@ -3,11 +3,20 @@ Clase ListaEquipos para la entrega 2
  */
 package tp;
 
+// Libreria Archivos
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+// Libreria de Base de Datos
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ListaEquipos {
     // atributo
@@ -87,6 +96,48 @@ public class ListaEquipos {
         }           
         return lista;
     }
+    
+    // CARGAR DESDE BASE E DATOS
+    
+    public void cargarDeBd( ) {
+        
+        Connection conn = null;
+    
+        try { 
+        conn = DriverManager.getConnection("jdbc:sqlite:pronosticos.db");
+        Statement stmt = conn.createStatement();
+        String sql = "Select idEquipo,Nombre,Descripcion from equipos ";
+        
+        ResultSet rs = stmt.executeQuery(sql);
+        ListaEquipos lista = new ListaEquipos();
+        while (rs.next()) {
+                       Equipo e = new Equipo(
+                        rs.getInt("idEquipo"),
+                        rs.getString("Nombre"),
+                        rs.getString("Descripcion")
+                );
+                lista.addEquipo(e);
+                            }
+             System.out.println("Mostrando los OBJETOS de ListaEquipos...");
+             System.out.println(lista.listar());
+            } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+                } catch (SQLException e) {
+                // conn close failed.
+                System.out.println(e.getMessage());
+            }
+        }
+    }   
+
+    
+    
+    
+    
     
     // cargar desde el archivo
     public void cargarDeArchivo() {
