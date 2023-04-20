@@ -1,7 +1,7 @@
 /*
 Clase ListaParticipantes para la entrega 2
  */
-package tp;
+package com.mycompany.tp;
 
 import java.io.File;
 import java.io.IOException;
@@ -101,14 +101,14 @@ public class ListaParticipantes {
     
     /// CARGAR DESDE BASE E DATOS
     
-    public void cargarDeBd( int idParticipante) {
+    public void cargarDeBd( ) {
         
         Connection conn = null;
     
         try { 
         conn = DriverManager.getConnection("jdbc:sqlite:pronosticos.db");
         Statement stmt = conn.createStatement();
-        String sql = "Select idParticipante,Nombre from participantes WHERE idParticipante= "+ idParticipante;
+        String sql = "Select idParticipante,Nombre from participantes  ";
         
         ResultSet rs = stmt.executeQuery(sql);
         ListaParticipantes lista = new ListaParticipantes();
@@ -186,6 +186,15 @@ public class ListaParticipantes {
         }       
     }
     
+    
+    public List<Participante> getOrdenadosPorPuntaje(){
+    
+    List<Participante> ordenados = new ArrayList<Participante>();
+    ordenados.addAll(participantes);
+    Collections.sort(ordenados,Collections.reverseOrder());
+    return ordenados;
+    
+    }
     
     
 

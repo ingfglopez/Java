@@ -1,7 +1,7 @@
 /*
 Clase ListaPronosticos para la entrega 2
  */
-package tp;
+package com.mycompany.tp;
 
 import java.io.File;
 import java.io.IOException;

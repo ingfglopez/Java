@@ -1,7 +1,7 @@
 /*
 Clase ListaEquipos para la entrega 2
  */
-package tp;
+package com.mycompany.tp;
 
 // Libreria Archivos
 import java.io.File;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tp;
+package com.mycompany.tp;
 
 /**
  *
@@ -104,14 +104,14 @@ public class ListaPartidos {
     
     /// CARGAR DESDE BASE E DATOS
     
-    public void cargarDeBd(int idPartido,  ListaEquipos listaequipos) {
+    public void cargarDeBd(ListaEquipos listaequipos) {
         
         Connection conn = null;
     
         try { 
         conn = DriverManager.getConnection("jdbc:sqlite:pronosticos.db");
         Statement stmt = conn.createStatement();
-        String sql = "Select idPartido , idEquipo1 , idEquipo2 , golesEquipo1 , golesEquipo2  from partidos WHERE idPartido= "+ idPartido;
+        String sql = "Select idPartido , idEquipo1 , idEquipo2 , golesEquipo1 , golesEquipo2  from partidos  ";
         
         ResultSet rs = stmt.executeQuery(sql);
         Partido partido;
@@ -120,7 +120,7 @@ public class ListaPartidos {
                         
                        /*System.out.println(rs.getInt("idPartido") + "\t"
                         + rs.getString("Nombre") + "\t");*/
-                       //int idPartido = rs.getInt("idPartido");
+                       int idPartido = rs.getInt("idPartido");
                        int equipo1 = rs.getInt("idEquipo1");
                        int equipo2 = rs.getInt("idEquipo2");
                        int golesEquipo1 = rs.getInt("golesEquipo1");

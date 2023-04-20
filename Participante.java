@@ -1,7 +1,7 @@
 /*
  Participante para Entrega 2
  */
-package tp;
+package com.mycompany.tp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,9 @@ public class Participante {
     private Integer idParticipante;
     private String nombre;
     private ListaPronosticos pronosticos;
+    
+    
+
     
     public Participante(Integer idParticipante, String nombre, ListaPronosticos pronosticos) {
         this.idParticipante = idParticipante;
@@ -57,14 +60,8 @@ public class Participante {
         this.pronosticos = pronosticos;
     }
     
-    /*public Class Participante implements Comparable<participante> {
-    private Integer idParticipante;
-    private String nombre;
-    private ListaPronosico pronostico;
-    
    
-
-} */
+   
 
     // retorna el puntaje del participando calculando los valores de los pronosticos
     public int getPuntaje() {
@@ -85,6 +82,23 @@ public class Participante {
     public String toString() {
         return "Participante{" + "idParticipante=" + idParticipante + ", nombre=" + nombre + ", pronosticos=" + pronosticos + ", puntaje=" + getPuntaje() + '}';
     }  
+    
+    
+    
+    
+    // compara los puntajes 
+    public int compareTo (Participante o) {
+    int miPuntaje =this.getPuntaje();
+    int otroPuntaje = o.getPuntaje();
+    
+    if (miPuntaje==otroPuntaje)
+        return 0;
+    else if (miPuntaje>otroPuntaje)
+        return 1;
+    else
+        return -1;
+    }       
+    
     
     void cargarPronosticos (ListaEquipos equipos, ListaPartidos partidos) {
         this.pronosticos.cargarDeArchivo(this.getIdParticipante(), equipos, partidos);

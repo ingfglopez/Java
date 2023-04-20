@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tp;
+package com.mycompany.tp;
 
 /**
  *
@@ -69,7 +69,15 @@ public class Pronostico {
         return "Pronostico{" + "idPronostico=" + idPronostico + ", equipo=" + equipo + ", partido=" + partido + ", Resultado=" + Resultado + '}';
     }
 
+    public int getPuntaje(){
+    char resultado = this.partido.getResultado(this.equipo);
+    if (resultado == this.getResultado()){
+       return 1;
+    } else {
+       return 0;    
+    }
     
+    }
     
     
    
